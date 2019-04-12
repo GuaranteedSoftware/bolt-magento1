@@ -1,0 +1,14 @@
+/* ============================================ *
+ * Product Page Checkout - Success
+ * ============================================ */
+.boltpay-onepage-success .col-main {
+    padding: 0;
+    text-align: center;
+}
+.boltpay-onepage-success .buttons-set {
+    margin: 10px 0;
+    text-align: center;
+}
+.boltpay-onepage-success .buttons-set button {
+    float: none !important;
+}

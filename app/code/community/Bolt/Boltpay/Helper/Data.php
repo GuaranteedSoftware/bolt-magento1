@@ -207,6 +207,10 @@ class Bolt_Boltpay_Helper_Data extends Mage_Core_Helper_Abstract
                     initBoltButtons();
                     ";
                 break;
+            case Bolt_Boltpay_Block_Checkout_Boltpay::CHECKOUT_TYPE_PRODUCT_PAGE:
+                if(trim(Mage::getStoreConfig('payment/boltpay/successpage'),'/') == 'checkout/onepage/success'){
+                    $successUrl = $this->getMagentoUrl('boltpay/onepage/success');
+                }
             default:
                 $javascript .= "
                     if (order_completed) {

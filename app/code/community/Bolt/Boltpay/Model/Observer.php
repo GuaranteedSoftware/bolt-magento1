@@ -116,8 +116,11 @@ class Bolt_Boltpay_Model_Observer
      * Event: checkout_onepage_controller_success_action
      */
     public function clearShoppingCart() {
-        $cartHelper = Mage::helper('checkout/cart');
-        $cartHelper->getCart()->truncate()->save();
+        if(!$this->boltHelper()->isProductPageCheckout()){
+            $cartHelper = Mage::helper('checkout/cart');
+            $cartHelper->getCart()->truncate()->save();
+        }
+
     }
 
     public function sendCompleteAuthorizeRequest($request)

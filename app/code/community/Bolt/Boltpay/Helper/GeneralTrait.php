@@ -151,6 +151,16 @@ trait Bolt_Boltpay_Helper_GeneralTrait {
     }
 
     /**
+     * @return bool
+     */
+    public function isProductPageCheckout()
+    {
+        $checkoutSession = Mage::getSingleton('checkout/session');
+
+        return $checkoutSession->getData('checkout_type') == Bolt_Boltpay_Block_Checkout_Boltpay::CHECKOUT_TYPE_PRODUCT_PAGE;
+    }
+
+    /**
      * Dispatches event to filter a value
      *
      * @param string                    $eventName              The name of the event to be dispatched
