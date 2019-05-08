@@ -59,7 +59,7 @@ class Bolt_Boltpay_ShippingController
     public function indexAction()
     {
         try {
-          
+
             set_time_limit(30);
             ignore_user_abort(true);
 
@@ -88,6 +88,14 @@ class Bolt_Boltpay_ShippingController
             ////////////////////////////////////////////////////////////////////////////////
             /// Apply shipping address with validation checks
             ////////////////////////////////////////////////////////////////////////////////
+            Mage::dispatchEvent(
+                'bolt_boltpay_shipping_estimate_before',
+                array(
+                    'quote'=> $quote,
+                    'transaction' => $mockTransaction
+                )
+            );
+
             $shippingAddress = $requestData->shipping_address;
             $addressErrorDetails = array();
 
@@ -116,7 +124,6 @@ class Bolt_Boltpay_ShippingController
                     ->setBody(json_encode(array('status' => 'failure','error' => $addressErrorDetails)));
             }
             ////////////////////////////////////////////////////////////////////////////////
-
 
             ////////////////////////////////////////////////////////////////////////////////////////
             // Check session cache for estimate.  If the shipping city or postcode, and the country code match,
@@ -169,7 +176,6 @@ class Bolt_Boltpay_ShippingController
      */
     public function prefetchEstimateAction()
     {
-
         set_time_limit(30);
         ignore_user_abort(true);
 
@@ -266,7 +272,7 @@ class Bolt_Boltpay_ShippingController
         if(!empty($addressData['country_id'])){
             /** @var Mage_Directory_Model_Country $countryObj */
             $countryObj = Mage::getModel('directory/country')->loadByCode($addressData['country_id']);
-    
+
             if (!$countryObj->getRegionCollection()->getSize()) {
                 // If country does not have region options for dropdown.
                 $addressData['region'] = $addressData['region_name'];
@@ -277,7 +283,7 @@ class Bolt_Boltpay_ShippingController
                     $addressData['region'] = $regionModel->getName();
                     $addressData['region_id'] = $regionModel->getId();
                 }
-            }    
+            }
         }
         return $addressData;
     }
@@ -365,7 +371,7 @@ class Bolt_Boltpay_ShippingController
     private function isApplePayRequest() {
         $requestData = json_decode($this->_requestJSON);
         $shippingAddress = $requestData->shipping_address;
-        
+
         // For a more strict check, we would enable verifying the phone number is null
         return ($shippingAddress->name === 'n/a') /* && is_null($shippingAddress->phone) */;
     }
